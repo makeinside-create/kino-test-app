@@ -29,6 +29,11 @@ type Ticket {
   eventId: String!
   id: ID!
   seat: Int!
-  status: String!
+  status: TicketStatus!
   userId: String
+}
+
+enum TicketStatus {
+  AVAILABLE
+  RESERVED
 }

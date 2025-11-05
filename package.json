@@ -9,9 +9,7 @@
     "runNotifications": "npx nx serve notifications",
     "dockerUp": "docker-compose up -d",
     "dockerDown": "docker-compose down",
-    "migration:auth": "npm run typeorm:auth migration:run",
-    "migration:tickets": "npm run typeorm:tickets migration:run",
-    "typeorm:auth": "TS_NODE_PROJECT=apps/auth/tsconfig.json npx ts-node ./node_modules/typeorm/cli -d apps/auth/data-source.ts",
+    "migration": "npm run typeorm:tickets migration:run",
     "typeorm:tickets": "TS_NODE_PROJECT=apps/tickets/tsconfig.json npx ts-node ./node_modules/typeorm/cli -d apps/tickets/data-source.ts"
   },
   "private": true,

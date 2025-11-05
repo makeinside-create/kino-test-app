@@ -18,6 +18,7 @@ import {GetEventsHandler} from "./cqrs/handlers/get-events.handler";
 import {CreateEventHandler} from "./cqrs/handlers/create-event.handler";
 import {UpdateEventHandler} from "./cqrs/handlers/update-event.handler";
 import {UsersModule} from "@kino-app/common/users/users.module";
+import {User} from "@kino-app/db/entities/user.entity";
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import {UsersModule} from "@kino-app/common/users/users.module";
       username: process.env.DB_USERNAME || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
       database: process.env.DB_NAME || 'kinodb',
-      entities: [Event, Ticket],
+      entities: [Event, Ticket, User],
       synchronize: false,
       // migrations: ['dist/apps/auth/migrations/*.js'],
       // migrationsRun: true,
