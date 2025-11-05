@@ -34,6 +34,12 @@ export class TicketsService {
     });
   }
 
+  async getTicketById(id: string): Promise<Ticket | null> {
+    return this.ticketRepository.findOne({
+      where: {id},
+    });
+  }
+
   async saveTicket(ticket: Ticket): Promise<Ticket> {
     return this.ticketRepository.save(ticket);
   }

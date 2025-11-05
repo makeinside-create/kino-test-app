@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { ReserveTicketCommand } from '../commands/reserve-ticket.command';
 import { TicketsService } from '../../tickets.service';
 import {Ticket, TicketStatus} from "@kino-app/db/entities/ticket.entity";
@@ -15,32 +15,17 @@ export class ReserveTicketHandler
   ) {}
 
   async execute(command: ReserveTicketCommand): Promise<Ticket> {
-    const { eventId, seat, userId, token } = command;
+    const { ticketId, userId, token } = command;
 
-    // Check if event exists
-    const event = await this.ticketsService.getEventById(eventId);
-    if (!event) {
-      throw new BadRequestException('Event not found');
-    }
-
-    // Check if ticket exists and is available
-    let ticket = await this.ticketsService.getTicketByEventAndSeat(
-      eventId,
-      seat,
-    );
-
+    // Check if ticket exists
+    const ticket = await this.ticketsService.getTicketById(ticketId);
     if (!ticket) {
-      // Create ticket if it doesn't exist
-      const newTicket = await this.ticketsService.saveTicket({
-        eventId,
-        seat,
-        status: TicketStatus.AVAILABLE,
-      } as Ticket);
-      ticket = newTicket;
+      throw new NotFoundException('Ticket not found');
     }
 
+    // Check if ticket status is AVAILABLE
     if (ticket.status !== TicketStatus.AVAILABLE) {
-      throw new BadRequestException('Ticket is already reserved');
+      throw new BadRequestException('Ticket is not available');
     }
 
     // Reserve the ticket

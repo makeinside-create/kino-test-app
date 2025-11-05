@@ -16,7 +16,7 @@ type Event {
 type Mutation {
   createEvent(date: String!, name: String!): Event!
   createTicket(eventId: String!, seat: Float!, token: String!): Ticket!
-  reserveTicket(eventId: String!, seat: Float!, token: String!): Ticket!
+  reserveTicket(ticketId: String!, token: String!): Ticket!
   updateEvent(date: String, id: String!, name: String): Event!
 }
 

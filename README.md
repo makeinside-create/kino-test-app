@@ -138,3 +138,48 @@ Response:
   }
 }
 ```
+### reserveTicket
+```
+mutation reserveTicket ($ticketId: String! $token: String!) {
+  reserveTicket(ticketId: $ticketId token: $token) {
+    id
+		seat
+		status
+		userId
+  }
+}
+```
+Request:
+```json
+{
+  "ticketId":"6468e946-1e79-4508-9513-af799d2b571b",
+  "token": "0b4864fc-3522-4475-a1e0-3eae839669fe"
+}
+```
+
+Response:
+```json
+{
+  "data": {
+    "reserveTicket": {
+      "id": "6468e946-1e79-4508-9513-af799d2b571b",
+      "seat": 10,
+      "status": "RESERVED",
+      "userId": "cf2d0447-35ac-4c9e-aa54-8b139ad9d15f"
+    }
+  }
+}
+```
+
+__After reserveTicket, a message will appear in the “notifications” application console:__
+```text
+Email sent to user testmail@gmail.com for ticket 6468e946-1e79-4508-9513-af799d2b571b.
+```
+
+## Stop Services
+
+__Stop__: postgres, redis, kafka, zookeeper
+
+```sh
+npm run dockerDown
+```
