@@ -27,9 +27,7 @@ npm run dockerUp
 
 ## Init DB
 ```sh
-npm run migration:auth
-
-npm run migration:tickets
+npm run migration
 ```
 
 ## Start Project
