@@ -19,6 +19,8 @@ import {CreateEventHandler} from "./cqrs/handlers/create-event.handler";
 import {UpdateEventHandler} from "./cqrs/handlers/update-event.handler";
 import {UsersModule} from "@kino-app/common/users/users.module";
 import {User} from "@kino-app/db/entities/user.entity";
+import {PublishTicketReservedHandler} from "./cqrs/handlers/publish-ticket-reserved.handler";
+import {TicketReservedSaga} from "./cqrs/sagas/ticket-reserved.saga";
 
 @Module({
   imports: [
@@ -55,7 +57,9 @@ import {User} from "@kino-app/db/entities/user.entity";
     TicketsService,
     GetTicketsHandler,
     ReserveTicketHandler,
+    PublishTicketReservedHandler,
     CreateTicketHandler,
+    TicketReservedSaga,
     EventsResolver,
     EventsService,
     GetEventsHandler,

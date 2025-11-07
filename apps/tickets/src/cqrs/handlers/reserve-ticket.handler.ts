@@ -1,9 +1,9 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { ReserveTicketCommand } from '../commands/reserve-ticket.command';
 import { TicketsService } from '../../tickets.service';
 import {Ticket, TicketStatus} from "@kino-app/db/entities/ticket.entity";
-import {KafkaService} from "../../kafka/kafka.service";
+import {TicketReservedEvent} from "../events/ticket-reserved.event";
 
 @CommandHandler(ReserveTicketCommand)
 export class ReserveTicketHandler
@@ -11,7 +11,7 @@ export class ReserveTicketHandler
 {
   constructor(
     private ticketsService: TicketsService,
-    private kafkaService: KafkaService,
+    private eventBus: EventBus,
   ) {}
 
   async execute(command: ReserveTicketCommand): Promise<Ticket> {
@@ -33,12 +33,11 @@ export class ReserveTicketHandler
     ticket.userId = userId;
     const reservedTicket = await this.ticketsService.saveTicket(ticket);
 
-    // Emit Kafka event
+    // Publish domain event
     if (reservedTicket.userId) {
-      await this.kafkaService.publishTicketReserved({
-        ticketId: reservedTicket.id,
-        token
-      });
+      this.eventBus.publish(
+        new TicketReservedEvent(reservedTicket.id, reservedTicket.userId, token),
+      );
     }
 
     return reservedTicket;
